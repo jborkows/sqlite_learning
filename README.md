@@ -126,3 +126,14 @@ select * from aaa where bool=true;
 | bool |
 |------|
 | 1    |
+
+### floating point
+```sql 
+create table aaa(value real) strict;
+insert into aaa values (26.3),(-10.52),(-15.78);
+select sum(value) from aaa; -- will print some near zero
+select decimal_sum(value) from aaa; -- will print 0.0
+select decimal_add(10.52,-10.53), 10.52-10.53; -- -0.01|-0.00999999999999979
+select decimal_add('10.52','-10.53'), 10.52-10.53; -- -0.01|-0.00999999999999979
+
+```
