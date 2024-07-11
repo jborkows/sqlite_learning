@@ -137,3 +137,17 @@ select decimal_add(10.52,-10.53), 10.52-10.53; -- -0.01|-0.00999999999999979
 select decimal_add('10.52','-10.53'), 10.52-10.53; -- -0.01|-0.00999999999999979
 
 ```
+
+### RowId
+```sql
+create table example(n number );
+insert into example values (1),(2),(3);
+.mode markdown
+select *, rowid, _rowId_,oid from example;
+```
+
+| n | rowid | rowid | rowid |
+|---|-------|-------|-------|
+| 1 | 1     | 1     | 1     |
+| 2 | 2     | 2     | 2     |
+| 3 | 3     | 3     | 3     |
