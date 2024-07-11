@@ -151,3 +151,34 @@ select *, rowid, _rowId_,oid from example;
 | 1 | 1     | 1     | 1     |
 | 2 | 2     | 2     | 2     |
 | 3 | 3     | 3     | 3     |
+
+rowId is clustered index, so we can have column as primary key with null. Primary key is in fact secondary index, so it could be slower. If primary key is integer then primary key will be rowId.
+
+"without rowid" table uses primary key as clustered index.
+
+#### Autoincrement
+```sql 
+sqlite> create table a1 (id integer primary key autoincrement, text text);
+sqlite> insert into a1 (text) values ('a'),('b');
+sqlite> select * from a1;
+1|a
+2|b
+sqlite> select * from sqlite_sequence;
+a1|2
+
+```
+If sequence reaches max integer then nothing will be inserted. sqlite_sequence can be then updated... warning zone.
+
+## Generated column
+```sql 
+sqlite> (first_name, ' ', last_name)), full_name_stored as (concat(first_name, ' ', last_name)) stored );
+sqlite> insert into example values(1,'Jacek', 'B');
+sqlite> select * from example;
+1|Jacek|B|Jacek B|Jacek B
+sqlite> update example set last_name='C';
+sqlite> select * from example;
+1|Jacek|C|Jacek C|Jacek C
+
+```
+by default column is virtual. Generated columns has to be deterministic.
+
