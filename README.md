@@ -182,3 +182,50 @@ sqlite> select * from example;
 ```
 by default column is virtual. Generated columns has to be deterministic.
 
+## Journal modes
+- rollback
+creates for transaction second file with copy of original data. Modification happen:
+ - commit -> separate file can be deleted
+ - rollback -> page is replaced with copied one
+- wal write ahead log
+creates separate file for writing and append, every some time "checkpoints" happen and state is merged. Pragma for journal is persistent.
+busy_timeout pragma decides how much writer waits for possibility to write. By default is 0 <- don't wait -> it is pragma per connection.
+## Transaction modes
+immediate, exclusive, deferred -> in wall immediate and exclusive are the same, deferred is default
+Warning if started with deferred and trying to write busy timeout will not wait!!! It will wait only if transaction was started as immediate.
+
+## Vacuum
+Positives:
+- could free space
+- reduces fragmentation
+Negatives:
+- could be slow
+- requires additional space (it copies whole db)
+- requires exclusive lock
+
+##  Statistics
+```sql
+sqlite> select * from sqlite_stat1;
+Parse error: no such table: sqlite_stat1
+sqlite> pragma optimize(0x03); -- dry run
+ANALYZE "main"."users"
+ANALYZE "main"."bookmarks"
+ANALYZE "main"."categories" -- can be run as standalone
+sqlite> pragma optimize; -- can be done partialy using pragma analysis_limit;
+sqlite> select * from sqlite_stat1;
+users|bday|989908 87
+users|name|989908 334 2
+users|email|989908 1
+bookmarks|user_id|5018199 6
+categories|pid|15 3
+
+```
+## Pragma
+pragma synchronous=NORMAL -- how the data are written to disk, 0 <- trust that data will be saved
+pragma synchronous=OFF -- could be useful during import of large of amount of data
+pragma cache_size=2000; -- -2000 means 2000kB, +2000 means 2000 pages
+pragma temp_store = memory; -- create temporal table in memory
+pragma foreign_key = true; -- enable foreign keys
+
+## Indexes
+(index)[./index.md]
