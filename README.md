@@ -228,4 +228,4 @@ pragma temp_store = memory; -- create temporal table in memory
 pragma foreign_key = true; -- enable foreign keys
 
 ## Indexes
-(index)[./index.md]
+[index](index.md)
