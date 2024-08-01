@@ -119,3 +119,7 @@ QUERY PLAN
 
 ```
 important use union all to eliminate need for double checking. Recursive keyword is not required. Please add recursive condition stop, even limit 10.
+## Window functions
+[Window functions](window_functions.md)
+## Nulls fun
+[Null fun](nulls_fun.md)
