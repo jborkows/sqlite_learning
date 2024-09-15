@@ -162,3 +162,6 @@ Sqlite has full text support (fts5). Be aware update, insert and delete from sou
 - insert with 'delete' to react on delete
 - insert with 'delete' and insert to react to update
 
+Can modify rank of search using rank or  bm25 function.
+Can add highlighting of match using highlight function.
+Can also limit output using snippet function instead of highlight.
