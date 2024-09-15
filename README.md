@@ -31,7 +31,9 @@ select * from users; <- will write result in form of inserts into some_file.sql
 create virtual table temp.t1 using csv(filename="aa.csv", header=true)
 
 
+```sql
 select * from generate_series(0,100)
+```
 
 ## Types
 
@@ -123,3 +125,40 @@ important use union all to eliminate need for double checking. Recursive keyword
 [Window functions](window_functions.md)
 ## Nulls fun
 [Null fun](nulls_fun.md)
+## Upserts
+insert on conflict
+## Returning
+One can add * or specific into returning.
+Returning can be added to delete, insert, update.
+## Aggregates
+- sqllite accepts printing column not present in group by.
+- one can add something like count(*) filter (where sth = 'aaaa')
+- sum/total -> sum for all empty columns will display null, total will display 0.0
+- can load with extension decimal_sum
+- group_concat and string_concat is something like listagg in oracle
+
+## Sqlschema
+``` 
+select type,sql from sqlite_schema where tbl_name='<table name>';
+```
+
+## Schema version
+One can use PRAGMA user_version to store schema version <- it is not used by sqlite itself.
+
+## Backup
+### All
+sqlite3 database ".backup" 
+### Excluding sparse data (marked as deleted)
+sqlite3 database "vacuum into 'backup.db'"
+## Dumb
+sqlite3 database ".dump" > dump.sql -> export as series of sql commands
+
+## JSON
+[JSON / JSOB](json.md)
+
+## Full text search
+Sqlite has full text support (fts5). Be aware update, insert and delete from source table will not be populated automatically. One can rebuild fts table (strange syntax) or use triggers using:
+- insert to react on insert
+- insert with 'delete' to react on delete
+- insert with 'delete' and insert to react to update
+
